@@ -1,0 +1,37 @@
+mport random
+
+media = 0
+desviacion = 1
+n_datos = 2000
+# Generamos los datos usando la distribución de Gauss
+datos = [random.gauss(media, desviacion) for _ in range(n_datos)]
+
+n_barras = 20
+min_val = min(datos)
+max_val = max(datos)
+ancho_rango = (max_val - min_val) / n_barras
+
+conteos = [0] * n_barras
+
+# Clasificar los datos en las barras
+for d in datos:
+    indice = int((d - min_val) / ancho_rango)
+    if indice >= n_barras: # Usamos >= para seguridad
+        indice = n_barras - 1
+    conteos[indice] += 1
+
+print(f"\nHistograma Gaussiano (n={n_datos})")
+print("-" * 60)
+
+max_conteo = max(conteos)
+factor_escala = 40
+
+for i in range(n_barras):
+    rango_inicio = min_val + i * ancho_rango
+    # Calculamos el largo de la barra de asteriscos
+    largo_barra = int((conteos[i] / max_conteo) * factor_escala)
+    barra = "*" * largo_barra
+# Formateamos la salida para que las columnas queden alineadas
+    print(f"{rango_inicio:6.2f} | {barra.ljust(factor_escala)} ({conteos[i]})")
+
+print("-" * 60)  
